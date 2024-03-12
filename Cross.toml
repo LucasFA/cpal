@@ -1,7 +1,14 @@
 [target.armv7-unknown-linux-gnueabihf]
-dockerfile = "Dockerfile"
+pre-build = [
+    "dpkg --add-architecture armhf",
+    """apt-get update && \
+    apt-get install libasound2-dev:armhf -y && \
+    apt-get install libjack-jackd2-dev:armhf libjack-jackd2-0:armhf -y"""
+]
 
 [target.armv7-unknown-linux-gnueabihf.env]
 passthrough = [
     "RUSTFLAGS",
 ]
+PKG_CONFIG_ALLOW_CROSS = 1
+PKG_CONFIG_PATH = "/usr/lib/arm-linux-gnueabihf/pkgconfig/"
